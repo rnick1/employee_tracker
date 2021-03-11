@@ -25,6 +25,10 @@ manID INT NOT NULL,
 PRIMARY KEY (id)
 );
 
+SELECT * FROM department;
+SELECT * FROM empRole;
+SELECT * FROM employee;
+
 -- I need to join department.id with role.depID so that role.depID = department.id
 -- I need to join role.id with with employee.roleID so that role.id = employee.roleID
 -- When prompted, if the name the user adds as an empoyee's manager, then that manager's employee.id needs to be joined with the employee's employee.manID so that employee.manID = employee.ID (of the manager)

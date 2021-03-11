@@ -10,13 +10,13 @@ INSERT INTO departments (depName)
 VALUES ('Sales');
 
 -- Seed data for role table:
-INSERT INTO role (title, salary)
+INSERT INTO empRole (title, salary)
 VALUES ('Junior Manager', 40000.00);
 
-INSERT INTO role (title, salary)
+INSERT INTO empRole (title, salary)
 VALUES ('Manager', 47000.00);
 
-INSERT INTO role (title, salary)
+INSERT INTO empRole (title, salary)
 VALUES ('Senior Manager', 52000.00);
 
 -- Seed data for employee table:
