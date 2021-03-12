@@ -5,8 +5,8 @@ VALUES ('Finance', 1), ('HR', 2), ('Sales', 3);
 
 USE employeeDB;
 -- Seed data for role table:
-INSERT INTO role (title, salary, id)
-VALUES ('Junior Manager', 40000.00, 1), ('Manager', 47000.00, 2), ('Senior Manager', 52000.00, 3);
+INSERT INTO role (id, title, salary, dep_id)
+VALUES (1, 'Junior Manager', 40000.00, 3), (2, 'Manager', 47000.00, 1), (3, 'Senior Manager', 52000.00, 2);
 
 USE employeeDB;
 -- Seed data for employee table:
