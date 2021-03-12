@@ -4,7 +4,7 @@ USE employeeDB;
 
 -- Department table:
 CREATE TABLE department (
-id INT NOT NULL AUTO_INCREMENT,
+id INT AUTO_INCREMENT,
 name VARCHAR (30),
 PRIMARY KEY (id)
 );
@@ -13,7 +13,7 @@ CREATE TABLE role (
 id INT NOT NULL AUTO_INCREMENT,
 title VARCHAR (30) NOT NULL,
 salary DECIMAL (7, 2) NOT NULL,
-dep_id INT NOT NULL,
+dep_id INT,
 PRIMARY KEY (id),
 FOREIGN KEY (dep_id) REFERENCES department (id)
 );
