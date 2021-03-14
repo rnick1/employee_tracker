@@ -6,22 +6,40 @@ const connection = mysql.createConnection({
     host: 'localhost',
     port: 3306,
     user: 'root',
-    password: '',
-    database: 'boston',
+    password: 'rnick1$9A!',
+    database: 'employeeDB'
 });
-
-const readColleges = () => {
-    connection.query('SELECT name FROM colleges', (err, res) => {
-        if (err) throw err;
-
-        // Log all results of the SELECT statement
-        console.log(res);
-        connection.end();
-    });
-};
 
 connection.connect((err) => {
     if (err) throw err;
     console.log(`connected as id ${connection.threadId}\n`);
-    readColleges();
+    menu();
 });
+
+const menu = () =>
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'menu choices',
+            message: 'What would you like to do?',
+            choices: [
+                'Add department',
+                'Add role',
+                'Add employee',
+                'View department',
+                'View role',
+                'View employee',
+                'Update role'
+            ],
+        }]);
+
+// Now I need one function for each choice that the user has:
+function addDepartment()
+function addRole()
+function addEmployee()
+function viewDepartment()
+function viewRole()
+function viewEmployee()
+function updateRole()
+
+
