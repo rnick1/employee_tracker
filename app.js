@@ -31,8 +31,38 @@ const menu = () =>
                 'View employee',
                 'Update role'
             ],
-        }]);
+        }])
+        .then((answer) => {
+            switch (answer.action) {
+                case 'Add department':
+                    addDepartment();
+                    break;
 
+                case 'Add role':
+                    addRole();
+                    break;
+
+                case 'Add employee':
+                    addEmployee();
+                    break;
+
+                case 'View department':
+                    viewDepartment();
+                    break;
+
+                case 'View role':
+                    viewRole();
+                    break;
+
+                case 'View employee':
+                    viewEmployee();
+                    break;
+
+                case 'Update role':
+                    updateRole();
+                    break;
+            };
+        });
 // Now I need one function for each choice that the user has:
 function addDepartment()
 function addRole()
