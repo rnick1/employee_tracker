@@ -88,130 +88,121 @@ const viewEmployees = () => {
 };
 
 const addDepartment = () => {
-    inquirer
-        .prompt([
+    inquirer.prompt([
+        {
+            name: 'name',
+            type: 'input',
+            message: 'What is the name of the department you would like to add?',
+        },
+    ]).then((answer) => {
+        connection.query('INSERT INTO department SET ?',
             {
-                name: 'name',
-                type: 'input',
-                message: 'What is the name of the department you would like to add?',
+                name: answer.name,
             },
-        ]).then((answer) => {
-            connection.query('INSERT INTO department SET ?',
-                {
-                    name: answer.name,
-                },
-                (err) => {
-                    if (err) throw err;
-                    console.log('This department has been added to our database!');
-                    menu();
-                }
-            );
-        });
+            (err) => {
+                if (err) throw err;
+                console.log('This department has been added to our database!');
+                menu();
+            }
+        );
+    });
 };
 
 const addRole = () => {
-    inquirer
-        .prompt([
+    inquirer.prompt([
+        {
+            name: 'title',
+            type: 'input',
+            message: 'What is the title of the role you would like to add?',
+        },
+        {
+            name: 'salary',
+            type: 'input',
+            message: 'What is the salary for this role?',
+        },
+    ]).then((answer) => {
+        connection.query(
+            'INSERT INTO role SET ?',
             {
-                name: 'title',
-                type: 'input',
-                message: 'What is the title of the role you would like to add?',
+                title: answer.title,
+                salary: answer.salary,
             },
-            {
-                name: 'salary',
-                type: 'input',
-                message: 'What is the salary for this role?',
-            },
-            {
-                name: 'department',
-                type: 'input',
-                message: 'What department does the role belong to?',
-            },
-        ])
-        .then((answer) => {
-            connection.query(
-                'INSERT INTO role SET ?',
-                {
-                    title: answer.title,
-                    salary: answer.salary,
-                    department: answer.department,
-                },
-                (err) => {
-                    if (err) throw err;
-                    console.log('This role has been added to our database!');
-                    menu();
-                }
-            );
-        });
+            (err) => {
+                if (err) throw err;
+                console.log('This role has been added to our database!');
+                menu();
+            }
+        );
+    });
 };
 
 const addEmployee = () => {
-    inquirer
-        .prompt([
+    inquirer.prompt([
+        {
+            name: 'employee_first_name',
+            type: 'input',
+            message: 'What is the employee\'s first name?',
+        },
+        {
+            name: 'employee_last_name',
+            type: 'input',
+            message: 'What is the employee\'s last name?',
+        },
+        {
+            name: 'employee_role',
+            type: 'input',
+            message: 'What role does the employee have in the company?',
+        },
+        // Maybe replace the manager question with a dropdown...
+        {
+            name: 'employee_manager',
+            type: 'input',
+            message: 'Who is this employee\'s manager?',
+        },
+    ]).then((answer) => {
+        connection.query(
+            'INSERT INTO employee SET ?',
             {
-                name: 'employee_first_name',
-                type: 'input',
-                message: 'What is the employee\'s first name?',
+                first_name: answer.employee_first_name,
+                last_name: answer.employee_last_name,
+                employee_role: answer.employee_role,
+                employee_manager: answer.employee_manager || null,
             },
-            {
-                name: 'employee_last_name',
-                type: 'input',
-                message: 'What is the employee\'s last name?',
-            },
-            {
-                name: 'employee_role',
-                type: 'input',
-                message: 'What role does the employee have in the company?',
-            },
-            // Maybe replace the manager question with a dropdown...
-            {
-                name: 'employee_manager',
-                type: 'input',
-                message: 'Who is this employee\'s manager?',
-            },
-        ])
-        .then((answer) => {
-            connection.query(
-                'INSERT INTO employee SET ?',
-                {
-                    first_name: answer.employee_first_name,
-                    last_name: answer.employee_last_name,
-                    employee_role: answer.employee_role,
-                    employee_manager: answer.employee_manager || null,
-                },
-                (err) => {
-                    if (err) throw err;
-                    console.log('This employee has been added to our database!');
-                    menu();
-                }
-            );
-        });
+            (err) => {
+                if (err) throw err;
+                console.log('This employee has been added to our database!');
+                menu();
+            }
+        );
+    });
 };
 // Ask first name, last name, assign a role, and select a manager's id (possibly from a dropdown???)
-// function updateRole(); Needs a lot of work...
 const updateRole = () => {
-    inquirer
-        .prompt([
-            {
-                name: 'employee_last_name',
-                type: 'input',
-                message: 'What is the employee\'s last name?',
-            },
-            connection.query(
-                'UPDATE employee SET ? WHERE ?',
-                [
-                    {
-                        role_id: answer.bid,
-                    },
-                    {
-                        id: chosenItem.id,
-                    },
-                ],
-                (error) => {
-                    if (error) throw err;
-                    console.log('Bid placed successfully!');
-                    menu();
-                }
-            )]
-        )
+    inquirer.prompt([
+        {
+            name: 'employee_last_name',
+            type: 'input',
+            message: 'What is the employee\'s last name?',
+        },
+        connection.query(
+            'UPDATE employee SET ? WHERE ?',
+            [
+                {
+                },
+                {
+                },
+            ],
+            (error) => {
+                if (error) throw err;
+                console.log('This employee\'s information has been updated!');
+                menu();
+            }
+        )]
+    )
 }
+/* To Do:
+1. Find a way to test the application in the terminal so that I can make sure that it works so far.
+2. Join the department table to the employee and roles tables in viewEmployees function so that department name is displayed with everything else.
+3.In the addEmployee function, add a drop down menu that contains a list of managers. Maybe I should create an array that contains all the managers and refer to that?
+4. Fix the updateRole function. May need to refer to activities for this one...
+*/
