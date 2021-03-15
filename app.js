@@ -65,29 +65,25 @@ const menu = () =>
         });
 
 const viewDepartments = () => {
-    console.log('Selecting all departments...\n');
     connection.query('SELECT department.id, department.name FROM department;', (err, res) => {
         if (err) throw err;
         console.log(res);
-        connection.end();
+        menu();
     });
 };
 const viewRoles = () => {
-    console.log('Selecting all roles...\n');
     connection.query('SELECT role.id, role.title, role.salary FROM role;', (err, res) => {
         if (err) throw err;
         console.log(res);
-        connection.end();
+        menu();
     });
-    console.log(query.sql);
 };
 // Important!!! I still need to add department name to this result!!! I need to figure out how to join three or more tables...
 const viewEmployees = () => {
-    console.log('Selecting all employees...\n');
     connection.query('SELECT employee.first_name, employee.last_name, role.title, role.salary, employee.manager_id FROM role INNER JOIN employee on role.id = employee.role_id;', (err, res) => {
         if (err) throw err;
         console.log(res);
-        connection.end();
+        menu();
     });
 };
 
@@ -107,7 +103,7 @@ const addDepartment = () => {
                 (err) => {
                     if (err) throw err;
                     console.log('This department has been added to our database!');
-                    start();
+                    menu();
                 }
             );
         });
@@ -143,7 +139,7 @@ const addRole = () => {
                 (err) => {
                     if (err) throw err;
                     console.log('This role has been added to our database!');
-                    start();
+                    menu();
                 }
             );
         });
@@ -186,7 +182,7 @@ const addEmployee = () => {
                 (err) => {
                     if (err) throw err;
                     console.log('This employee has been added to our database!');
-                    start();
+                    menu();
                 }
             );
         });
@@ -214,7 +210,7 @@ const updateRole = () => {
                 (error) => {
                     if (error) throw err;
                     console.log('Bid placed successfully!');
-                    start();
+                    menu();
                 }
             )]
         )
