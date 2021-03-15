@@ -68,6 +68,34 @@ const menu = () =>
 // // We want inquirer to ask the name of the department, the user types an input response and hits enter. A message is then console.logged saying that the department has been added. The department id will be added automatically.
 // function addRole();
 // // We want inquirer to ask what the title for the role is, it's salary, and the department that it belongs to. It will also have an id automatically assigned.
+const viewDepartments = () => {
+    console.log('Selecting all departments...\n');
+    connection.query('SELECT * FROM department', (err, res) => {
+        if (err) throw err;
+        console.log(res);
+        connection.end();
+    });
+};
+const viewRoles = () => {
+    console.log('Selecting all roles...\n');
+    connection.query('SELECT * FROM role', (err, res) => {
+        if (err) throw err;
+        console.log(res);
+        connection.end();
+    });
+    console.log(query.sql);
+};
+// Important!!! I still need to add department name to this result!!! I need to figure out how to join three or more tables...
+const viewEmployees = () => {
+    console.log('Selecting all employees...\n');
+    connection.query('SELECT employee.first_name, employee.last_name, role.title, role.salary, employee.manager_id FROM role INNER JOIN employee on role.id = employee.role_id;', (err, res) => {
+        if (err) throw err;
+        console.log(res);
+        connection.end();
+    });
+};
+
+
 const addDepartment = () => {
     inquirer
         .prompt([
@@ -171,31 +199,7 @@ const addEmployee = () => {
         });
 };
 // Ask first name, last name, assign a role, and select a manager's id (possibly from a dropdown???)
-const viewDepartments = () => {
-    console.log('Selecting all departments...\n');
-    connection.query('SELECT * FROM department', (err, res) => {
-        if (err) throw err;
-        console.log(res);
-        connection.end();
-    });
-};
-const viewRoles = () => {
-    console.log('Selecting all roles...\n');
-    connection.query('SELECT * FROM role', (err, res) => {
-        if (err) throw err;
-        console.log(res);
-        // connection.end();
-    });
-    console.log(query.sql);
-};
-const viewEmployees = () => {
-    console.log('Selecting all employees...\n');
-    connection.query('SELECT * FROM employee', (err, res) => {
-        if (err) throw err;
-        console.log(res);
-        connection.end();
-    });
-};
+
 // function updateRole(); Needs a lot of work...
 const updateRole = () => {
     inquirer
