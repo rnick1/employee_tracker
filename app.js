@@ -78,7 +78,7 @@ const viewDepartments = () => {
 };
 const viewRoles = () => {
     console.log('Selecting all roles...\n');
-    connection.query('SELECT * FROM role', (err, res) => {
+    connection.query('SELECT role.id, role.title, role.salary FROM role;', (err, res) => {
         if (err) throw err;
         console.log(res);
         connection.end();
