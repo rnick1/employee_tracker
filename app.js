@@ -68,9 +68,67 @@ const menu = () =>
 // // We want inquirer to ask the name of the department, the user types an input response and hits enter. A message is then console.logged saying that the department has been added. The department id will be added automatically.
 // function addRole();
 // // We want inquirer to ask what the title for the role is, it's salary, and the department that it belongs to. It will also have an id automatically assigned.
+const addDepartment = () => {
+    inquirer
+        .prompt([
+            {
+                name: 'name',
+                type: 'input',
+                message: 'What is the name of the department you would like to add?',
+            },
+        ])
+        .then((answer) => {
+            connection.query(
+                'INSERT INTO department SET ?',
+                {
+                    name: answer.name,
+                },
+                (err) => {
+                    if (err) throw err;
+                    console.log('This department has been added to our database!');
+                    start();
+                }
+            );
+        });
+};
+
+const addRole = () => {
+    inquirer
+        .prompt([
+            {
+                name: 'title',
+                type: 'input',
+                message: 'What is the title of the role you would like to add?',
+            },
+            {
+                name: 'salary',
+                type: 'input',
+                message: 'What is the salary for this role?',
+            },
+            {
+                name: 'department',
+                type: 'input',
+                message: 'What department does the role belong to?',
+            },
+        ])
+        .then((answer) => {
+            connection.query(
+                'INSERT INTO role SET ?',
+                {
+                    title: answer.title,
+                    salary: answer.salary,
+                    department: answer.department,
+                },
+                (err) => {
+                    if (err) throw err;
+                    console.log('This role has been added to our database!');
+                    start();
+                }
+            );
+        });
+};
 
 const addEmployee = () => {
-    // prompt for info about the item being put up for auction
     inquirer
         .prompt([
             {
@@ -97,7 +155,7 @@ const addEmployee = () => {
         ])
         .then((answer) => {
             connection.query(
-                'INSERT INTO emmployee SET ?',
+                'INSERT INTO employee SET ?',
                 {
                     first_name: answer.employee_first_name,
                     last_name: answer.employee_last_name,
