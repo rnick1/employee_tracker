@@ -99,10 +99,8 @@ const addDepartment = () => {
                 type: 'input',
                 message: 'What is the name of the department you would like to add?',
             },
-        ])
-        .then((answer) => {
-            connection.query(
-                'INSERT INTO department SET ?',
+        ]).then((answer) => {
+            connection.query('INSERT INTO department SET ?',
                 {
                     name: answer.name,
                 },
