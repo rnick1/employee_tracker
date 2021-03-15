@@ -196,6 +196,30 @@ const viewEmployees = () => {
         connection.end();
     });
 };
-// function updateRole();
-
-
+// function updateRole(); Needs a lot of work...
+const updateRole = () => {
+    inquirer
+        .prompt([
+            {
+                name: 'employee_last_name',
+                type: 'input',
+                message: 'What is the employee\'s last name?',
+            },
+            connection.query(
+                'UPDATE employee SET ? WHERE ?',
+                [
+                    {
+                        role_id: answer.bid,
+                    },
+                    {
+                        id: chosenItem.id,
+                    },
+                ],
+                (error) => {
+                    if (error) throw err;
+                    console.log('Bid placed successfully!');
+                    start();
+                }
+            )]
+        )
+}
