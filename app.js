@@ -74,36 +74,39 @@ const addEmployee = () => {
     inquirer
         .prompt([
             {
-                name: 'item',
+                name: 'employee_first_name',
                 type: 'input',
-                message: 'What is the item you would like to submit?',
+                message: 'What is the employee\'s first name?',
             },
             {
-                name: 'category',
+                name: 'employee_last_name',
                 type: 'input',
-                message: 'What category would you like to place your auction in?',
+                message: 'What is the employee\'s last name?',
             },
             {
-                name: 'startingBid',
+                name: 'employee_role',
                 type: 'input',
-                message: 'What would you like your starting bid to be?',
+                message: 'What role does the employee have in the company?',
+            },
+            // Maybe replace the manager question with a dropdown...
+            {
+                name: 'employee_manager',
+                type: 'input',
+                message: 'Who is this employee\'s manager?',
             },
         ])
         .then((answer) => {
-            // when finished prompting, insert a new item into the db with that info
             connection.query(
-                'INSERT INTO auctions SET ?',
-                // QUESTION: What does the || 0 do?
+                'INSERT INTO emmployee SET ?',
                 {
-                    item_name: answer.item,
-                    category: answer.category,
-                    starting_bid: answer.startingBid || 0,
-                    highest_bid: answer.startingBid || 0,
+                    first_name: answer.employee_first_name,
+                    last_name: answer.employee_last_name,
+                    employee_role: answer.employee_role,
+                    employee_manager: answer.employee_manager || null,
                 },
                 (err) => {
                     if (err) throw err;
-                    console.log('Your auction was created successfully!');
-                    // re-prompt the user for if they want to bid or post
+                    console.log('This employee has been added to our database!');
                     start();
                 }
             );
