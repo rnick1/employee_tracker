@@ -63,11 +63,7 @@ const menu = () =>
                     break;
             };
         });
-// // Now I need one function for each choice that the user has:
-// function addDepartment();
-// // We want inquirer to ask the name of the department, the user types an input response and hits enter. A message is then console.logged saying that the department has been added. The department id will be added automatically.
-// function addRole();
-// // We want inquirer to ask what the title for the role is, it's salary, and the department that it belongs to. It will also have an id automatically assigned.
+
 const viewDepartments = () => {
     console.log('Selecting all departments...\n');
     connection.query('SELECT department.id, department.name FROM department;', (err, res) => {
@@ -94,7 +90,6 @@ const viewEmployees = () => {
         connection.end();
     });
 };
-
 
 const addDepartment = () => {
     inquirer
@@ -199,7 +194,6 @@ const addEmployee = () => {
         });
 };
 // Ask first name, last name, assign a role, and select a manager's id (possibly from a dropdown???)
-
 // function updateRole(); Needs a lot of work...
 const updateRole = () => {
     inquirer
