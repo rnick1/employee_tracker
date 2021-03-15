@@ -33,3 +33,7 @@ CREATE TABLE employee (
 
 -- For viewRoles: 
 -- SELECT role.id, role.title, role.salary FROM role;
+
+-- For viewDepartments:
+-- SELECT department.id, department.name FROM department;
+

@@ -70,7 +70,7 @@ const menu = () =>
 // // We want inquirer to ask what the title for the role is, it's salary, and the department that it belongs to. It will also have an id automatically assigned.
 const viewDepartments = () => {
     console.log('Selecting all departments...\n');
-    connection.query('SELECT * FROM department', (err, res) => {
+    connection.query('SELECT department.id, department.name FROM department;', (err, res) => {
         if (err) throw err;
         console.log(res);
         connection.end();
