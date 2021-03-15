@@ -47,15 +47,15 @@ const menu = () =>
                     break;
 
                 case 'View department':
-                    viewDepartment();
+                    viewDepartments();
                     break;
 
                 case 'View role':
-                    viewRole();
+                    viewRoles();
                     break;
 
                 case 'View employee':
-                    viewEmployee();
+                    viewEmployees();
                     break;
 
                 case 'Update role':
@@ -63,13 +63,78 @@ const menu = () =>
                     break;
             };
         });
-// Now I need one function for each choice that the user has:
-function addDepartment()
-function addRole()
-function addEmployee()
-function viewDepartment()
-function viewRole()
-function viewEmployee()
-function updateRole()
+// // Now I need one function for each choice that the user has:
+// function addDepartment();
+// // We want inquirer to ask the name of the department, the user types an input response and hits enter. A message is then console.logged saying that the department has been added. The department id will be added automatically.
+// function addRole();
+// // We want inquirer to ask what the title for the role is, it's salary, and the department that it belongs to. It will also have an id automatically assigned.
+
+const addEmployee = () => {
+    // prompt for info about the item being put up for auction
+    inquirer
+        .prompt([
+            {
+                name: 'item',
+                type: 'input',
+                message: 'What is the item you would like to submit?',
+            },
+            {
+                name: 'category',
+                type: 'input',
+                message: 'What category would you like to place your auction in?',
+            },
+            {
+                name: 'startingBid',
+                type: 'input',
+                message: 'What would you like your starting bid to be?',
+            },
+        ])
+        .then((answer) => {
+            // when finished prompting, insert a new item into the db with that info
+            connection.query(
+                'INSERT INTO auctions SET ?',
+                // QUESTION: What does the || 0 do?
+                {
+                    item_name: answer.item,
+                    category: answer.category,
+                    starting_bid: answer.startingBid || 0,
+                    highest_bid: answer.startingBid || 0,
+                },
+                (err) => {
+                    if (err) throw err;
+                    console.log('Your auction was created successfully!');
+                    // re-prompt the user for if they want to bid or post
+                    start();
+                }
+            );
+        });
+};
+// Ask first name, last name, assign a role, and select a manager's id (possibly from a dropdown???)
+const viewDepartments = () => {
+    console.log('Selecting all departments...\n');
+    connection.query('SELECT * FROM department', (err, res) => {
+        if (err) throw err;
+        console.log(res);
+        connection.end();
+    });
+};
+const viewRoles = () => {
+    console.log('Selecting all roles...\n');
+    connection.query('SELECT * FROM role', (err, res) => {
+        if (err) throw err;
+        console.log(res);
+        // connection.end();
+    });
+    console.log(query.sql);
+};
+const viewEmployees = () => {
+    console.log('Selecting all employees...\n');
+    connection.query('SELECT * FROM employee', (err, res) => {
+        if (err) throw err;
+        console.log(res);
+        connection.end();
+    });
+};
+// function updateRole();
 
 
