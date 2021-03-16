@@ -118,7 +118,7 @@ const addDepartment = () => {
 };
 
 const addRole = () => {
-    connection.query(`SELECT role.title, role.salary FROM role`, (err, res) => {
+    connection.query(`SELECT role.title, role.salary, role.dep_id FROM role`, (err, res) => {
         inquirer.prompt([
             {
                 name: 'title',
@@ -129,13 +129,19 @@ const addRole = () => {
                 name: 'salary',
                 type: 'input',
                 message: 'What is the salary for this role?'
-            }
+            },
+            {
+                name: 'dep_id',
+                type: 'input',
+                message: 'What department?',
+            },
         ]).then(function (res) {
             connection.query(
                 'INSERT INTO role SET ?',
                 {
                     title: res.title,
                     salary: res.salary,
+                    dep_id: res.dep_id
                 },
                 (err) => {
                     if (err) throw err;
