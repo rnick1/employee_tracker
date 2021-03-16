@@ -79,7 +79,6 @@ const viewRoles = () => {
         menu();
     });
 };
-// PROBLEM: This function doesn't work.
 const viewEmployees = () => {
     connection.query(`SELECT employee.first_name, 
     employee.last_name, 
@@ -119,38 +118,24 @@ const addDepartment = () => {
 };
 
 const addRole = () => {
-    return new Promise((resolve, reject) => {
-        connection.query(`SELECT department.id, department.name FROM department`, (err, res) => {
-            console.log(res)
-            resolve(res)
-        })
-    }).then(departmentList => {
-        console.log(departmentList)
+    connection.query(`SELECT role.title, role.salary FROM role`, (err, res) => {
         inquirer.prompt([
             {
                 name: 'title',
                 type: 'input',
-                message: 'What is the title of the role you would like to add?',
+                message: 'What is the title of the role you would like to add?'
             },
             {
                 name: 'salary',
                 type: 'input',
-                message: 'What is the salary for this role?',
-            },
-            {
-                name: 'department',
-                type: 'list',
-                message: 'What department?',
-                choices: [
-                    departmentList
-                ]
-            },
-        ]).then((answer) => {
+                message: 'What is the salary for this role?'
+            }
+        ]).then(function (res) {
             connection.query(
                 'INSERT INTO role SET ?',
                 {
-                    title: answer.title,
-                    salary: answer.salary,
+                    title: res.title,
+                    salary: res.salary,
                 },
                 (err) => {
                     if (err) throw err;

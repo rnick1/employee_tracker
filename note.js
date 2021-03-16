@@ -1,3 +1,48 @@
+const addRole = () => {
+    return new Promise((resolve, reject) => {
+        connection.query(`SELECT department.id, department.name FROM department`, (err, res) => {
+            console.log(res)
+            resolve(res)
+        })
+    }).then(departmentList => {
+        console.log(departmentList)
+        inquirer.prompt([
+            {
+                name: 'title',
+                type: 'input',
+                message: 'What is the title of the role you would like to add?',
+            },
+            {
+                name: 'salary',
+                type: 'input',
+                message: 'What is the salary for this role?',
+            },
+            {
+                name: 'department',
+                type: 'list',
+                message: 'What department?',
+                choices: [
+                    departmentList
+                ]
+            },
+        ]).then((answer) => {
+            connection.query(
+                'INSERT INTO role SET ?',
+                {
+                    title: answer.title,
+                    salary: answer.salary,
+                },
+                (err) => {
+                    if (err) throw err;
+                    console.log('This role has been added to our database!');
+                    menu();
+                }
+            );
+        })
+    });
+};
+
+
 // FROM ACTIVITY 14
 
 const mysql = require('mysql');
