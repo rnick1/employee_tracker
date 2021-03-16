@@ -20,7 +20,7 @@ const menu = () =>
     inquirer.prompt([
         {
             type: 'list',
-            name: 'menu choices',
+            name: 'menuChoices',
             message: 'What would you like to do?',
             choices: [
                 'Add department',
@@ -33,7 +33,8 @@ const menu = () =>
             ],
         }])
         .then((answer) => {
-            switch (answer.action) {
+            console.log(answer.menuChoices)
+            switch (answer.menuChoices) {
                 case 'Add department':
                     addDepartment();
                     break;
@@ -65,24 +66,33 @@ const menu = () =>
         });
 
 const viewDepartments = () => {
-    connection.query('SELECT department.id, department.name FROM department;', (err, res) => {
+    connection.query('SELECT department.id AS ID, department.name AS Name FROM department;', (err, res) => {
         if (err) throw err;
-        console.log(res);
+        console.table(res);
         menu();
     });
 };
 const viewRoles = () => {
     connection.query('SELECT role.id, role.title, role.salary FROM role;', (err, res) => {
         if (err) throw err;
-        console.log(res);
+        console.table(res);
         menu();
     });
 };
-// Important!!! I still need to add department name to this result!!! I need to figure out how to join three or more tables...
+// PROBLEM: This function doesn't work.
 const viewEmployees = () => {
-    connection.query('SELECT employee.first_name, employee.last_name, role.title, role.salary, employee.manager_id FROM role INNER JOIN employee on role.id = employee.role_id;', (err, res) => {
+    connection.query(`SELECT employee.first_name, 
+    employee.last_name, 
+    role.title, 
+    department.name AS Department, 
+    role.salary, 
+    employee.manager_id 
+    FROM role 
+    INNER JOIN employee on role.id = employee.role_id 
+    INNER JOIN department on department.id = role.dep_id;
+    `, (err, res) => {
         if (err) throw err;
-        console.log(res);
+        console.table(res);
         menu();
     });
 };
@@ -109,30 +119,46 @@ const addDepartment = () => {
 };
 
 const addRole = () => {
-    inquirer.prompt([
-        {
-            name: 'title',
-            type: 'input',
-            message: 'What is the title of the role you would like to add?',
-        },
-        {
-            name: 'salary',
-            type: 'input',
-            message: 'What is the salary for this role?',
-        },
-    ]).then((answer) => {
-        connection.query(
-            'INSERT INTO role SET ?',
+    return new Promise((resolve, reject) => {
+        connection.query(`SELECT department.id, department.name FROM department`, (err, res) => {
+            console.log(res)
+            resolve(res)
+        })
+    }).then(departmentList => {
+        console.log(departmentList)
+        inquirer.prompt([
             {
-                title: answer.title,
-                salary: answer.salary,
+                name: 'title',
+                type: 'input',
+                message: 'What is the title of the role you would like to add?',
             },
-            (err) => {
-                if (err) throw err;
-                console.log('This role has been added to our database!');
-                menu();
-            }
-        );
+            {
+                name: 'salary',
+                type: 'input',
+                message: 'What is the salary for this role?',
+            },
+            {
+                name: 'department',
+                type: 'list',
+                message: 'What department?',
+                choices: [
+                    departmentList
+                ]
+            },
+        ]).then((answer) => {
+            connection.query(
+                'INSERT INTO role SET ?',
+                {
+                    title: answer.title,
+                    salary: answer.salary,
+                },
+                (err) => {
+                    if (err) throw err;
+                    console.log('This role has been added to our database!');
+                    menu();
+                }
+            );
+        })
     });
 };
 
@@ -156,8 +182,9 @@ const addEmployee = () => {
         // Maybe replace the manager question with a dropdown...
         {
             name: 'employee_manager',
-            type: 'input',
+            type: 'list',
             message: 'Who is this employee\'s manager?',
+            choices: ['']
         },
     ]).then((answer) => {
         connection.query(
@@ -200,6 +227,8 @@ const updateRole = () => {
         )]
     )
 }
+
+
 /* To Do:
 1. Find a way to test the application in the terminal so that I can make sure that it works so far.
 2. Join the department table to the employee and roles tables in viewEmployees function so that department name is displayed with everything else.
