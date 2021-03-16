@@ -156,45 +156,46 @@ const addRole = () => {
 };
 
 const addEmployee = () => {
-    inquirer.prompt([
-        {
-            name: 'employee_first_name',
-            type: 'input',
-            message: 'Please enter this employee\'s first name:',
-        },
-        {
-            name: 'employee_last_name',
-            type: 'input',
-            message: 'Please enter this employee\'s last name:',
-        },
-        {
-            name: 'employee_role',
-            type: 'input',
-            message: 'Please enter the id of this emplyee\'s role:',
-        },
-        // Maybe replace the manager question with a dropdown...
-        {
-            name: 'manager_id',
-            type: 'input',
-            message: 'Please enter this employee\'s manager\'s ID:',
-        },
-    ]).then((answer) => {
-        connection.query(
-            'INSERT INTO employee SET ?',
+    connection.query(`SELECT employee.first_name, employee.last_name, employee.role_id, employee.manager_id FROM employee`, (err, res) => {
+        inquirer.prompt([
             {
-                first_name: answer.employee_first_name,
-                last_name: answer.employee_last_name,
-                role_id: answer.role_id,
-                manager_id: answer.manager_id,
+                name: 'first_name',
+                type: 'input',
+                message: 'Please enter this employee\'s first name:',
             },
-            (err) => {
-                if (err) throw err;
-                console.log('This employee has been added to our database!');
-                menu();
-            }
-        );
+            {
+                name: 'last_name',
+                type: 'input',
+                message: 'Please enter this employee\'s last name:',
+            },
+            {
+                name: 'role_id',
+                type: 'input',
+                message: 'Please enter this employee\'s role ID:',
+            },
+            {
+                name: 'manager_id',
+                type: 'input',
+                message: 'Please enter this employee\'s manager\'s ID:',
+            },
+        ]).then(function (res) {
+            connection.query(
+                'INSERT INTO employee SET ?',
+                {
+                    first_name: res.first_name,
+                    last_name: res.last_name,
+                    role_id: res.role_id,
+                    manager_id: res.manager_id,
+                },
+                (err) => {
+                    if (err) throw err;
+                    console.log('This employee has been added to our database!');
+                    menu();
+                }
+            );
+        });
     });
-};
+}
 // Ask first name, last name, assign a role, and select a manager's id (possibly from a dropdown???)
 const updateRole = () => {
     inquirer.prompt([
