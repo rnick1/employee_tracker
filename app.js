@@ -196,43 +196,24 @@ const addEmployee = () => {
     });
 }
 const updateRole = () => {
-    connection.query(`SELECT 
-    employee.id,
-    employee.first_name, 
-    employee.last_name, 
-    role.title, 
-    department.name AS Department, 
-    role.salary, 
-    employee.manager_id 
-    FROM role 
-    INNER JOIN employee on role.id = employee.role_id 
-    INNER JOIN department on department.id = role.dep_id;
-    `, (err, res) => {
-        inquirer.prompt([
+    const query = connection.query(
+        'UPDATE role SET ? WHERE ?',
+        [
             {
-                name: 'role_id',
-                type: 'input',
-                message: 'Please enter the ID for this employee\'s new role:',
+                quantity: 100,
             },
-        ]).then(function (res) {
-            connection.query(
-                'UPDATE employee SET ? WHERE ?',
-                {
-                    role_id: res.role_id,
-                },
-                (err) => {
-                    if (err) throw err;
-                    console.log('This employee\'s information has been updated!');
-                    menu();
-                }
-            );
-        })
-    });
-}
+            {
+                flavor: 'Rocky Road',
+            },
+        ],
+        (err, res) => {
+            if (err) throw err;
+            console.log(`${res.affectedRows} products updated!\n`);
+            // Call deleteProduct AFTER the UPDATE completes
+            deleteProduct();
+        }
+    );
 
-/* To Do:
-1. Find a way to test the application in the terminal so that I can make sure that it works so far.
-2. Join the department table to the employee and roles tables in viewEmployees function so that department name is displayed with everything else.
-3.In the addEmployee function, add a drop down menu that contains a list of managers. Maybe I should create an array that contains all the managers and refer to that?
-4. Fix the updateRole function. May need to refer to activities for this one...
-*/
+    // logs the actual query being run
+    console.log(query.sql);
+};

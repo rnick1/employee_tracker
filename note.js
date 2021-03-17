@@ -21,7 +21,42 @@ const updateProduct = () => {
     // logs the actual query being run
     console.log(query.sql);
 };
-
+// Old version of updateRole:
+const updateRole = () => {
+    connection.query(`SELECT 
+    employee.id,
+    employee.first_name, 
+    employee.last_name, 
+    role.title, 
+    department.name AS Department, 
+    role.salary, 
+    employee.manager_id 
+    FROM role 
+    INNER JOIN employee on role.id = employee.role_id 
+    INNER JOIN department on department.id = role.dep_id;
+    `, (err, res) => {
+        inquirer.prompt([
+            {
+                name: 'role_id',
+                type: 'input',
+                message: 'Please enter the ID for this employee\'s new role:',
+            },
+        ]).then(function (res) {
+            connection.query(
+                'UPDATE employee SET ? WHERE ?',
+                {
+                    role_id: res.role_id,
+                },
+                (err) => {
+                    if (err) throw err;
+                    console.log('This employee\'s information has been updated!');
+                    menu();
+                }
+            );
+        })
+    });
+}
+// One version of addRole:
 const addRole = () => {
     connection.query(`SELECT role.title, role.salary, role.dep_id FROM role`, (err, res) => {
         inquirer.prompt([
