@@ -169,3 +169,62 @@ const addRole = () => {
         })
     });
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+const updateRole = () => {
+    inquirer.prompt([
+        {
+            name: 'name_of_employee',
+            type: 'input',
+            message: 'Please enter the last name of the employee you would like to edit:',
+        },
+        {
+            name: 'new_role',
+            type: 'input',
+            message: 'Please enter the title of this employee\'s new role:',
+        },
+    ]).then(function (answer) {
+        connection.query(
+            'SELECT '
+        )
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .then(function (answer) {
+            connection.query(
+                'UPDATE employee SET role_id=? WHERE last_name=?',
+                [
+                    answer.last_name,
+                    answer.role_title
+                ],
+                function (err, res) {
+                    if (err) throw err;
+                    console.log('This employee\'s information has been updated!');
+                    menu();
+                }
+            );
+        })
+}

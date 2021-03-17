@@ -200,19 +200,19 @@ const updateRole = () => {
         {
             name: 'name_of_employee',
             type: 'input',
-            message: 'Please enter the last name of the employee you would like to edit:',
+            message: 'Please enter the ID of the employee you would like to edit:',
         },
         {
             name: 'new_role',
             type: 'input',
-            message: 'Please enter the title of this employee\'s new role:',
+            message: 'Please enter the ID of this employee\'s new role:',
         },
     ]).then(function (answer) {
         connection.query(
-            'UPDATE employee SET role_id=? WHERE last_name=?',
+            'UPDATE employee SET role_id=? WHERE id=?',
             [
                 answer.last_name,
-                answer.role_title
+                answer.id
             ],
             function (err, res) {
                 if (err) throw err;
