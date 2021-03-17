@@ -196,7 +196,7 @@ const updateRole = () => {
         },
     ]).then(function (answer) {
         connection.query(
-            'SELECT '
+            'SELECT employee.role_id WHERE '
         )
     })
 
