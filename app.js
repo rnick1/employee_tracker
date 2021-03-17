@@ -210,10 +210,12 @@ const updateRole = () => {
     ]).then(function (res) {
         connection.query(
             'UPDATE employee SET role_id=? WHERE last_name=?',
-            [
-                res.last_name,
-                res.role_id
-            ],
+            {
+                last_name: res.last_name
+            },
+            {
+                role_id: res.role_id
+            },
             function (err) {
                 if (err) throw err;
                 console.log('This employee\'s information has been updated!');
