@@ -207,7 +207,8 @@ const updateRole = () => {
     FROM role 
     INNER JOIN employee on role.id = employee.role_id 
     INNER JOIN department on department.id = role.dep_id;
-    `, (err, res) => {
+    `, function (err, res) {
+        if (err) throw err
         inquirer.prompt([
             {
                 name: 'last_name',
@@ -228,7 +229,7 @@ const updateRole = () => {
                 {
                     last_name: res.last_name,
                 },
-                (err) => {
+                function (err) {
                     if (err) throw err;
                     console.log('This employee\'s information has been updated!');
                     menu();
