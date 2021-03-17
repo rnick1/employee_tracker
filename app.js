@@ -209,7 +209,7 @@ const updateRole = () => {
         },
     ]).then(function (res) {
         connection.query(
-            'UPDATE employee SET role_id=? WHERE last_name=?',
+            'UPDATE employee SET ? WHERE ?',
             {
                 last_name: res.last_name
             },
