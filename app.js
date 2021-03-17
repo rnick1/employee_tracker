@@ -198,26 +198,23 @@ const addEmployee = () => {
 const updateRole = () => {
     inquirer.prompt([
         {
-            name: 'last_name',
+            name: 'name_of_employee',
             type: 'input',
             message: 'Please enter the last name of the employee you would like to edit:',
         },
         {
-            name: 'role_id',
+            name: 'new_role',
             type: 'input',
-            message: 'Please enter the id of this employee\'s new role:',
+            message: 'Please enter the title of this employee\'s new role:',
         },
-    ]).then(function (res) {
+    ]).then(function (answer) {
         connection.query(
-            'UPDATE employee SET ? WHERE ?',
-            [{
-                last_name: res.last_name,
-
-            },
-            {
-                role_id: res.role_id
-            }],
-            function (err) {
+            'UPDATE employee SET role_id=? WHERE last_name=?',
+            [
+                answer.last_name,
+                answer.role_title
+            ],
+            function (err, res) {
                 if (err) throw err;
                 console.log('This employee\'s information has been updated!');
                 menu();
