@@ -138,8 +138,7 @@ const addRole = () => {
                 message: 'What department?',
             },
         ]).then(function (res) {
-            connection.query(
-                'INSERT INTO role SET ?',
+            connection.query('INSERT INTO role SET ?',
                 {
                     title: res.title,
                     salary: res.salary,
