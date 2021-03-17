@@ -21,6 +21,39 @@ const updateProduct = () => {
     // logs the actual query being run
     console.log(query.sql);
 };
+// // Post-slack version:
+// const updateRole = () => {
+//     inquirer.prompt([
+//         {
+//             name: 'name_of_employee',
+//             type: 'input',
+//             message: 'Please enter the last name of the employee you would like to edit:',
+//         },
+//         {
+//             name: 'new_role',
+//             type: 'input',
+//             message: 'Please enter the id of this employee\'s new role:',
+//         },
+//     ]).then function (res) {connection.query(
+//         `SELECT role_id FROM role WHERE answer.role_id`, function (err, res) {
+
+
+//     .then(function (answer) {
+//         connection.query(
+//             'UPDATE employee SET role_id=? WHERE last_name=?',
+//             [
+//                 answer.role_id,
+//                 answer.last_name
+//             ],
+//             function (err, res) {
+//                 if (err) throw err;
+//                 console.log('This employee\'s information has been updated!');
+//                 menu();
+//             }
+//         );
+//     })
+// })
+// }
 // Newer version of updateRole:
 const updateRole = () => {
     connection.query(`SELECT 
