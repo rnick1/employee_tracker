@@ -196,31 +196,40 @@ const addEmployee = () => {
         });
     });
 }
-// Ask first name, last name, assign a role, and select a manager's id (possibly from a dropdown???)
 const updateRole = () => {
-    inquirer.prompt([
-        {
-            name: 'employee_last_name',
-            type: 'input',
-            message: 'What is the employee\'s last name?',
-        },
-        connection.query(
-            'UPDATE employee SET ? WHERE ?',
-            [
+    connection.query(`SELECT 
+    employee.id,
+    employee.first_name, 
+    employee.last_name, 
+    role.title, 
+    department.name AS Department, 
+    role.salary, 
+    employee.manager_id 
+    FROM role 
+    INNER JOIN employee on role.id = employee.role_id 
+    INNER JOIN department on department.id = role.dep_id;
+    `, (err, res) => {
+        inquirer.prompt([
+            {
+                name: 'role_id',
+                type: 'input',
+                message: 'Please enter the ID for this employee\'s new role:',
+            },
+        ]).then(function (res) {
+            connection.query(
+                'UPDATE employee SET ? WHERE ?',
                 {
+                    role_id: res.role_id,
                 },
-                {
-                },
-            ],
-            (error) => {
-                if (error) throw err;
-                console.log('This employee\'s information has been updated!');
-                menu();
-            }
-        )]
-    )
+                (err) => {
+                    if (err) throw err;
+                    console.log('This employee\'s information has been updated!');
+                    menu();
+                }
+            );
+        })
+    });
 }
-
 
 /* To Do:
 1. Find a way to test the application in the terminal so that I can make sure that it works so far.
