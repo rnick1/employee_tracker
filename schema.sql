@@ -27,13 +27,3 @@ CREATE TABLE employee (
     PRIMARY KEY (id),
     FOREIGN KEY (role_id) REFERENCES role(id)
 );
-
--- For viewEmployees:
--- SELECT employee.first_name, employee.last_name, role.title, role.salary, employee.manager_id FROM role INNER JOIN employee on role.id = employee.role_id;
-
--- For viewRoles: 
--- SELECT role.id, role.title, role.salary FROM role;
-
--- For viewDepartments:
--- SELECT department.id, department.name FROM department;
-

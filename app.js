@@ -1,7 +1,9 @@
+// Required dependencies:
 const mysql = require('mysql');
 const consoleTable = require('console.table');
 const inquirer = require('inquirer');
 
+// The connection information:
 const connection = mysql.createConnection({
     host: 'localhost',
     port: 3306,
@@ -10,12 +12,14 @@ const connection = mysql.createConnection({
     database: 'employeeDB'
 });
 
+// The connection:
 connection.connect((err) => {
     if (err) throw err;
     console.log(`connected as id ${connection.threadId}\n`);
     menu();
 });
 
+// Start menu:
 const menu = () =>
     inquirer.prompt([
         {
@@ -65,6 +69,7 @@ const menu = () =>
             };
         });
 
+// View department functionality
 const viewDepartments = () => {
     connection.query('SELECT department.id AS ID, department.name AS Name FROM department;', (err, res) => {
         if (err) throw err;
@@ -72,6 +77,8 @@ const viewDepartments = () => {
         menu();
     });
 };
+
+// View roles functionality
 const viewRoles = () => {
     connection.query('SELECT role.id AS ID, role.title AS Title, role.salary AS Salary FROM role;', (err, res) => {
         if (err) throw err;
@@ -79,15 +86,17 @@ const viewRoles = () => {
         menu();
     });
 };
+
+// View employees functionality
 const viewEmployees = () => {
     connection.query(`SELECT 
-    employee.id,
-    employee.first_name, 
-    employee.last_name, 
-    role.title, 
+    employee.id AS ID,
+    employee.first_name AS First, 
+    employee.last_name AS Last, 
+    role.title AS Title, 
     department.name AS Department, 
-    role.salary, 
-    employee.manager_id 
+    role.salary AS Salary, 
+    employee.manager_id
     FROM role 
     INNER JOIN employee on role.id = employee.role_id 
     INNER JOIN department on department.id = role.dep_id;
@@ -98,6 +107,7 @@ const viewEmployees = () => {
     });
 };
 
+// Add department functionality
 const addDepartment = () => {
     inquirer.prompt([
         {
@@ -119,6 +129,7 @@ const addDepartment = () => {
     });
 };
 
+// Add role functionality
 const addRole = () => {
     connection.query(`SELECT role.title, role.salary, role.dep_id FROM role`, (err, res) => {
         inquirer.prompt([
@@ -154,6 +165,7 @@ const addRole = () => {
     });
 };
 
+// Add employee functionality
 const addEmployee = () => {
     connection.query(`SELECT employee.first_name, employee.last_name, employee.role_id, employee.manager_id FROM employee`, (err, res) => {
         inquirer.prompt([
@@ -195,6 +207,8 @@ const addEmployee = () => {
         });
     });
 }
+
+// Update role functionality
 const updateRole = () => {
     inquirer.prompt([
         {
