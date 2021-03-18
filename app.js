@@ -198,7 +198,7 @@ const addEmployee = () => {
 const updateRole = () => {
     inquirer.prompt([
         {
-            name: 'name_of_employee',
+            name: 'employee_id',
             type: 'input',
             message: 'Please enter the ID of the employee you would like to edit:',
         },
@@ -211,8 +211,8 @@ const updateRole = () => {
         connection.query(
             'UPDATE employee SET role_id=? WHERE id=?',
             [
-                answer.last_name,
-                answer.id
+                answer.new_role,
+                answer.employee_id
             ],
             function (err, res) {
                 if (err) throw err;
