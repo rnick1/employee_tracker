@@ -73,7 +73,7 @@ const viewDepartments = () => {
     });
 };
 const viewRoles = () => {
-    connection.query('SELECT role.id, role.title, role.salary FROM role;', (err, res) => {
+    connection.query('SELECT role.id AS ID, role.title AS Title, role.salary AS Salary FROM role;', (err, res) => {
         if (err) throw err;
         console.table(res);
         menu();
